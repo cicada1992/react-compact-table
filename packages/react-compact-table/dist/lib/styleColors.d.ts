@@ -1,0 +1,27 @@
+export declare const v3Colors: {
+    N0: string;
+    N10: string;
+    N20: string;
+    N30: string;
+    N40: string;
+    N50: string;
+    N60: string;
+    N70: string;
+    N80: string;
+    N90: string;
+    N100: string;
+    N300: string;
+    N500: string;
+    R5: string;
+    R100: string;
+    Y5: string;
+    Y50: string;
+    Y100: string;
+    B5: string;
+    B10: string;
+    B50: string;
+    B100: string;
+    B110: string;
+    G5: string;
+    G100: string;
+};

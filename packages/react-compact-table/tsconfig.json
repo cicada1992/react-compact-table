@@ -1,0 +1,33 @@
+{
+  "compilerOptions": {
+    "jsx": "react",
+    "allowJs": false,
+    "allowSyntheticDefaultImports": true,
+    "alwaysStrict": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": true,
+    "sourceMap": true,
+    "module": "es2015",
+    "target": "es5",
+    "moduleResolution": "node",
+    "suppressImplicitAnyIndexErrors": true,
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "declaration": true,
+    "declarationDir": "./dist",
+    "esModuleInterop": true,
+    // From TypeScript 2.9, it supports keyof number or symbol, but we only use string keys
+    "keyofStringsOnly": true,
+    "lib": ["dom", "es2015", "es2015.promise", "es2015.iterable", "esnext.asynciterable"],
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["src/components/*"],
+      "@icons/*": ["src/icons/*"],
+    },
+    "outDir": "./dist"
+  },
+  "include": [
+    "./src/**/*"
+  ],
+  "exclude": ["node_modules", "./src/stories", "dist"]
+}

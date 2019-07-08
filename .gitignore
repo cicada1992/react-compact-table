@@ -1,0 +1,11 @@
+.DS_Store
+.idea
+.idea/workspace.xml
+babelCache/**
+dist/**
+node_modules
+npm-debug.log
+public
+vendor/bower
+test-results.xml
+.vscode/
