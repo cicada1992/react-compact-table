@@ -1,6 +1,10 @@
 # react-compact-table
 
-- This is compact & easy to use react-compact-table
+- This is compact & easy to use react-compact-table (render props pattern)
+
+### dependacies
+- styled-components
+- lodash
 
 ### TableProps
 | Property | Type | Required? | Description |
@@ -30,7 +34,7 @@
 |:---|:---|:---:|:---|
 | dataKey | string | ✓ | matched key as your data
 | label | string |  | header label 
-| help | React.ReactNode |  | tooltip
+| help | React.ReactNode |  | tooltip (inactive now, fixing minor bug)
 | width | string |  | default: 10% of table width
 | align | string |  | default: left
 | cellAlign | string | | if you want to apply align separately between header and cell, use this
@@ -40,13 +44,12 @@
 const data = [
   { id: 'id-0', name: 'DongYoon',  conversions: 23242424 },
   { id: 'id-1', name: 'SangBoak', conversions: 1234 },
-  { id: 'id-2', name: 'MoonSik'' },
+  { id: 'id-2', name: 'MoonSik', conversions: 3 },
   { id: 'id-3', name: 'Heejin', conversions: 7211233123 },
   { id: 'id-4', name: 'Youngjae', conversions: 312 }
 ];
 ```
 ```
-// basic
 <Table data={data}>
   <TableColumn
     dataKey="name"
@@ -66,3 +69,6 @@ const data = [
   </TableColumn>
 </Table>
 ```
+
+### FYI
+If you wanna see more detail, refer `demo` directory in github
