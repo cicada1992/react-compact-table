@@ -1,7 +1,7 @@
 {
   "name": "react-compact-table",
   "version": "0.0.1",
-  "description": "Compact and Easy to use react table",
+  "description": "Compact and Easy to use react table(render props pattern)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
