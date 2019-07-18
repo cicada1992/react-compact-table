@@ -1,8 +1,12 @@
 # react-compact-table
 
-- This is compact & easy to use react-compact-table (render props pattern)
+- This is compact & easy to use react-compact-table (render props pattern with styled components)
 
-### dependacies
+
+### Install
+`npm install react-compact-table styled-components lodash`
+
+### dependancies
 - styled-components
 - lodash
 

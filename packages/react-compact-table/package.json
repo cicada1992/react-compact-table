@@ -1,6 +1,6 @@
 {
   "name": "react-compact-table",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Compact and Easy to use react table(render props pattern)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -22,6 +22,11 @@
   "engines": {
     "node": "8.11.3"
   },
+  "keywords": [
+    "react table",
+    "simple table",
+    "styled-components style table"
+  ],
   "devDependencies": {
     "@storybook/addon-actions": "^5.0.11",
     "@storybook/addon-centered": "^5.0.11",
