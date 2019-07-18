@@ -1,16 +1,25 @@
 # react-compact-table
+- This is compact & easy to use react-compact-table (render props pattern & using styled components)
 
-- This is compact & easy to use react-compact-table (render props pattern with styled components)
+
+## Getting Started
+```
+npm install react-compact-table --save
+```
 
 
-### Install
-`npm install react-compact-table styled-components lodash`
-
-### dependamcies
+## Dependancies
+```
 - styled-components
 - lodash
+```
 
-### TableProps
+
+## Demo
+https://cicada1992.github.io/react-compact-table/
+
+
+## TableProps
 | Property | Type | Required? | Description |
 |:---|:---|:---:|:---|
 | data | any[] | ✓ | inject your data (array) ✓ | TableColumn 
@@ -33,7 +42,8 @@
 | currentSortOrder | SortOrder |  | **desc** or **asc**
 | onHeaderClick | (sortKey: SortKey) => void |  | inject callback function to change sort key || sort order related to clicked specific header label
 
-### TableColumnProps
+
+## TableColumnProps
 | Property | Type | Required? | Description |
 |:---|:---|:---:|:---|
 | dataKey | string | ✓ | matched key as your data
@@ -43,7 +53,8 @@
 | align | string |  | default: left
 | cellAlign | string | | if you want to apply align separately between header and cell, use this
 
-### Example
+
+## Basic Usage
 ```
 const data = [
   { id: 'id-0', name: 'DongYoon',  conversions: 23242424 },
@@ -73,6 +84,3 @@ const data = [
   </TableColumn>
 </Table>
 ```
-
-### FYI
-If you wanna see more detail, refer `demo` directory in github

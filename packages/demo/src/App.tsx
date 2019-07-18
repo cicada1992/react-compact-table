@@ -46,7 +46,6 @@ class App extends React.Component<AppProps, AppState> {
           selectable
           selectedId={selectedId}
           onRowClick={this.handleRowClick}
-          removable
           sortable
           onHeaderClick={this.handleHeaderClick}
           currentSortKey={currentSortKey}

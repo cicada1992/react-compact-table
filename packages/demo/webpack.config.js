@@ -21,7 +21,6 @@ const SRC_DIR = path.join(__dirname, 'src'),
 const port = 3000;
 
 const exportConfig = {
-  mode: 'production',
   entry: {
     demo: ['./src']
   },
