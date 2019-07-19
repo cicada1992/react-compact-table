@@ -3,8 +3,9 @@ import memoize from 'memoize-one';
 import React from 'react';
 import { Table, TableColumn, TooltipGlobalStyle } from 'react-compact-table';
 import styled from 'styled-components';
-import { getSortedItems, SortOrder, SortKey } from './sortHelpers';
+
 import { DATA } from './fakeData';
+import { getSortedItems, SortKey, SortOrder } from './sortHelpers';
 
 const Text = styled.span`
   font-size: 13px;

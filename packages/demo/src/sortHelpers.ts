@@ -1,11 +1,12 @@
 import _ from 'lodash';
+
 import { Data } from './fakeData';
 
 export enum SortKey {
   Name = 'name',
   Objective = 'objective',
   Conversions = 'conversions',
-  Cvr = 'cvr',
+  Cvr = 'cvr'
 }
 
 export enum SortOrder {
@@ -13,13 +14,9 @@ export enum SortOrder {
   Desc = 'desc'
 }
 
-export function getSortedItems(
-  items: Data[],
-  sortKey: SortKey,
-  sortOrder: SortOrder
-): Data[] {
+export function getSortedItems(items: Data[], sortKey: SortKey, sortOrder: SortOrder): Data[] {
   const iteratee = (item: Data) => getSortableValue(item, sortKey);
-  return _.orderBy(items, [iteratee], [sortOrder])
+  return _.orderBy(items, [iteratee], [sortOrder]);
 }
 
 function getSortableValue(item: Data, sortKey: SortKey) {

@@ -12,7 +12,7 @@ export const DATA: Data[] = [
     name: 'DongYoon',
     objective: 'CPA',
     conversions: 23242424,
-    cvr: 0.054,
+    cvr: 0.054
   },
   { id: 'id-1', name: 'SangBoak', objective: 'V2I', conversions: 1234, cvr: 0.16 },
   { id: 'id-2', name: 'MoonSik', objective: 'CPV', conversions: 1, cvr: 2 },

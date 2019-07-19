@@ -1,0 +1,28 @@
+{
+  "extends": ["tslint:latest", "tslint-react", "tslint-config-prettier"],
+  "rulesDirectory": ["tslint-plugin-prettier"],
+  "rules": {
+    "prettier": true,
+    "interface-name": [true, "never-prefix"],
+    "object-literal-sort-keys": false,
+    "no-submodule-imports": false,
+    "no-implicit-dependencies": false,
+    "ban-types": false,
+    "no-console": { "severity": "warning" },
+    "no-var-requires": false,
+    "prefer-conditional-expression": false,
+    "prefer-object-spread": false,
+    "jsx-boolean-value": false,
+    "ordered-imports": [true, { "grouped-imports": true }],
+    "no-unused-expression": [true, "allow-tagged-template"],
+    "max-classes-per-file": false,
+    "no-empty-interface": false,
+    "no-object-literal-type-assertion": false,
+    "member-ordering": false,
+    "no-namespace": false,
+    "jsx-no-lambda": false
+  },
+  "linterOptions": {
+    "exclude": ["node_modules/**", "**/*.js"]
+  }
+}
