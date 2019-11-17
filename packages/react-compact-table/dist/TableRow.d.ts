@@ -6,6 +6,7 @@ interface TableRowProps {
     rowHeight?: string;
     selectable?: boolean;
     selected?: boolean;
+    noRadioButton?: boolean;
     onRowClick?: (id: string) => void;
     removable?: boolean;
     onRemoveClick?: (id: string) => void;

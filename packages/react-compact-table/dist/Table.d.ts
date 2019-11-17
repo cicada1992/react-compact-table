@@ -18,6 +18,7 @@ interface TableProps {
     footerColor?: string;
     selectable?: boolean;
     selectedId?: string;
+    noRadioButton?: boolean;
     onRowClick?: (id: string) => void;
     removable?: boolean;
     onRemoveClick?: (id: string) => void;

@@ -89,6 +89,7 @@ interface TableProps {
   // selectable
   selectable?: boolean;
   selectedId?: string;
+  noRadioButton?: boolean;
   onRowClick?: (id: string) => void;
 
   // removable
@@ -107,6 +108,7 @@ const Table: FunctionComponent<TableProps> = ({
   data,
   selectable,
   selectedId,
+  noRadioButton,
   removable,
   sortable,
   minWidth,
@@ -158,6 +160,7 @@ const Table: FunctionComponent<TableProps> = ({
                 rowHeight={rowHeight}
                 selectable={selectable}
                 selected={item.id === selectedId}
+                noRadioButton={noRadioButton}
                 removable={removable}
                 onRowClick={onRowClick}
                 onRemoveClick={onRemoveClick}

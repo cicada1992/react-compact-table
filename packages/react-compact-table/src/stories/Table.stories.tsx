@@ -32,6 +32,7 @@ storiesOf('Table', module)
   .addDecorator(centered)
   .add('basic', () => {
     const selectable = boolean('selectable', true);
+    const noRadioButton = boolean('noRadioButton', false);
     const removable = boolean('removable', true);
     const sortable = boolean('sortable', false);
     const selectedId = text('selectedId', 'id-0');
@@ -46,6 +47,7 @@ storiesOf('Table', module)
         data={data}
         selectable={selectable}
         selectedId={selectedId}
+        noRadioButton={noRadioButton}
         headerHeight={headerHeight}
         headerFontSize={headerFontSize}
         headerFontColor={headerFontColor}

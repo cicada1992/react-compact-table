@@ -52,6 +52,7 @@ interface TableRowProps {
 
   selectable?: boolean;
   selected?: boolean;
+  noRadioButton?: boolean;
   onRowClick?: (id: string) => void;
 
   removable?: boolean;
@@ -62,6 +63,7 @@ export const TableRow: FunctionComponent<TableRowProps> = ({
   item,
   selectable,
   selected,
+  noRadioButton,
   removable,
   rowHeight,
   onRowClick,
@@ -97,6 +99,7 @@ export const TableRow: FunctionComponent<TableRowProps> = ({
       {React.Children.map(children, (child: React.ReactElement, idx) => {
         const isFirst = idx === 0;
         const { dataKey, width, cellAlign, align, children: renderProps } = child.props;
+        const shouldShowRadioButton = !noRadioButton && selectable && isFirst;
         const column = renderProps({
           id: item.id,
           value: item[dataKey],
@@ -104,7 +107,7 @@ export const TableRow: FunctionComponent<TableRowProps> = ({
         });
         return (
           <TableCell key={dataKey} width={width} align={cellAlign || align}>
-            {selectable && isFirst ? (
+            {shouldShowRadioButton ? (
               <RadioButton label={<Label>{column}</Label>} checked={selected} value={item.id} />
             ) : (
               column
