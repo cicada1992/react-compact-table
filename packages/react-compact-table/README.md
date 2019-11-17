@@ -34,6 +34,7 @@ https://cicada1992.github.io/react-compact-table/
 | footerColor | string |  | default: none
 | selectable | boolean |  | activate to select (radio button in first column)
 | selectedId | string |  | inject selected id
+| noRadioButton | boolean |  | you can apply selectable row without radio button
 | onRowClick | (id: string) => void |  | inject callback function to change clicked id 
 | removable | boolean |  | activate to remove (be added *X* icon end of each row)
 | onRemoveClick | (id: string) => void |  | inject callback function to remove clicked id 
