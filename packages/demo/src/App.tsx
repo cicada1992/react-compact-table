@@ -1,11 +1,11 @@
-import autobind from 'autobind-decorator';
+import { boundMethod } from 'autobind-decorator';
 import memoize from 'memoize-one';
 import React from 'react';
 import { Table, TableColumn, TooltipGlobalStyle } from 'react-compact-table';
 import styled from 'styled-components';
 
-import { DATA } from './fakeData';
-import { getSortedItems, SortKey, SortOrder } from './sortHelpers';
+import { DATA, Data } from './fakeData';
+import { getSortedItems, SortOrder } from './sortHelpers';
 
 const Text = styled.span`
   font-size: 13px;
@@ -16,7 +16,7 @@ interface AppProps {}
 
 interface AppState {
   selectedId: string;
-  currentSortKey: SortKey;
+  currentSortKey: keyof Data;
   currentSortOrder: SortOrder;
 }
 
@@ -52,10 +52,15 @@ class App extends React.Component<AppProps, AppState> {
           currentSortKey={currentSortKey}
           currentSortOrder={currentSortOrder}
         >
-          <TableColumn dataKey="name" label="Name" help="this is pure text" align="left">
+          <TableColumn<Data, 'name'>
+            dataKey="name"
+            label="Name"
+            help="this is pure text"
+            align="left"
+          >
             {({ value }) => <Text>{value}</Text>}
           </TableColumn>
-          <TableColumn
+          <TableColumn<Data, 'objective'>
             dataKey="objective"
             label="Objective"
             help={<div>I'm react node</div>}
@@ -64,21 +69,21 @@ class App extends React.Component<AppProps, AppState> {
           >
             {({ value }) => <Text>{value}</Text>}
           </TableColumn>
-          <TableColumn
+          <TableColumn<Data, 'conversions'>
             dataKey="conversions"
             label="Conversions"
             help={<div>I'm react node</div>}
             width="120px"
-            align="left"
+            align="right"
           >
             {({ value }) => <Text>{value || 0}</Text>}
           </TableColumn>
-          <TableColumn
+          <TableColumn<Data, 'cvr'>
             dataKey="cvr"
             label="CVR"
             help={<div>I'm react node</div>}
             width="100px"
-            align="left"
+            align="right"
           >
             {({ value }) => <Text>{value || 0}</Text>}
           </TableColumn>
@@ -88,11 +93,12 @@ class App extends React.Component<AppProps, AppState> {
     );
   }
 
-  private memoizedGetSortedItems = memoize((items: any[], sortKey: SortKey, sortOrder: SortOrder) =>
-    getSortedItems(items, sortKey, sortOrder)
+  private memoizedGetSortedItems = memoize(
+    (items: any[], sortKey: keyof Data, sortOrder: SortOrder) =>
+      getSortedItems(items, sortKey, sortOrder)
   );
 
-  @autobind
+  @boundMethod
   private handleRowClick(id: string) {
     this.setState({ selectedId: id });
   }
@@ -101,8 +107,8 @@ class App extends React.Component<AppProps, AppState> {
     return currentSortOrder === SortOrder.Desc ? SortOrder.Asc : SortOrder.Desc;
   }
 
-  @autobind
-  private handleHeaderClick(sortKey: SortKey) {
+  @boundMethod
+  private handleHeaderClick(sortKey: keyof Data) {
     const { currentSortKey, currentSortOrder } = this.state;
     const nextSortOrder = this.getNextSortOrder(currentSortOrder);
 
@@ -114,21 +120,21 @@ class App extends React.Component<AppProps, AppState> {
     }
   }
 
-  @autobind
-  private setSortKey(nextSortKey: SortKey) {
+  @boundMethod
+  private setSortKey(nextSortKey: keyof Data) {
     this.setState({
       currentSortKey: nextSortKey
     });
   }
 
-  @autobind
+  @boundMethod
   private setSortOrder(nextSortOrder: SortOrder) {
     this.setState({
       currentSortOrder: nextSortOrder
     });
   }
 
-  @autobind
+  @boundMethod
   private clearSortOrder() {
     this.setState({
       currentSortOrder: SortOrder.Desc

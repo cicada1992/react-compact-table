@@ -3,11 +3,12 @@ import Svg from '@components/Svg';
 import arrowDownIcon from '@icons/arrow-down.svg';
 import arrowUpIcon from '@icons/arrow-up.svg';
 import _ from 'lodash';
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import styled, { css } from 'styled-components';
 
 import { TableColumnProps } from './TableColumn';
 import { TableRow } from './TableRow';
+import { BaseDataItem } from './types';
 
 const DEFAULT_WIDTH = '10%';
 const DEFAULT_ALIGN = 'left';
@@ -63,15 +64,15 @@ const FooterContainer = styled.div<{ footerColor?: string }>`
   ${({ footerColor }) => footerColor && `background: ${footerColor}`};
 `;
 
-const StyledSvg = styled(Svg)`
-  position: relative;
-  top: 2px;
+const StyledSvg = styled(Svg)<{ visible: boolean }>`
+  position: absolute;
   margin-left: 2px;
+  visibility: ${({ visible }) => (visible ? 'visible' : 'hidden')};
 `;
 
-interface TableProps {
-  data: any[];
-  children: Array<React.ReactElement<TableColumnProps>>;
+interface TableProps<T> {
+  data: T[];
+  children: Array<React.ReactElement<TableColumnProps<T, keyof T>>>;
 
   // style
   minWidth?: string;
@@ -98,82 +99,89 @@ interface TableProps {
 
   // sortable
   sortable?: boolean;
-  currentSortKey?: string;
+  currentSortKey?: keyof T;
   currentSortOrder?: string;
-  onHeaderClick?: (sortKey: string) => void;
+  onHeaderClick?: (sortKey: keyof T) => void;
 }
 
-const Table: FunctionComponent<TableProps> = ({
-  children,
-  data,
-  selectable,
-  selectedId,
-  noRadioButton,
-  removable,
-  sortable,
-  minWidth,
-  maxHeight,
-  headerBgColor = '#ffffff',
-  headerFontColor = '#000000',
-  headerFontSize = '12px',
-  headerHeight = '22px',
-  rowHeight,
-  renderFooterChildren,
-  footerColor,
-  onRowClick,
-  onRemoveClick,
-  currentSortKey,
-  currentSortOrder,
-  onHeaderClick
-}) => {
-  const arrowIcon = currentSortOrder === 'desc' ? arrowDownIcon : arrowUpIcon;
-  return (
-    <TableSheet minWidth={minWidth}>
-      <TableHead
-        headerBgColor={headerBgColor}
-        headerFontColor={headerFontColor}
-        headerFontSize={headerFontSize}
-        headerHeight={headerHeight}
-        useScrollbar={Boolean(maxHeight)}
-        sortable={sortable}
-      >
-        {React.Children.map(children, (child: React.ReactElement) => {
-          const { dataKey, label, width, align } = child.props;
-          return (
-            <TableCell key={dataKey} width={width} align={align}>
-              <span onClick={() => sortable && onHeaderClick(dataKey)}>{label}</span>
-              {/* TODO: activate below line after fixing css problem for tippy tooltip */}
-              {/* {help && <QuestionMark help={help} />} */}
-              {sortable && currentSortKey === dataKey && <StyledSvg src={arrowIcon} />}
-            </TableCell>
-          );
-        })}
-      </TableHead>
-      <TableBody maxHeight={maxHeight}>
-        <RadioButtonGroup width="100%" value={selectedId}>
-          {_.map(data, (item) => {
-            return (
-              <TableRow
-                key={item.id}
-                children={children}
-                item={item}
-                rowHeight={rowHeight}
-                selectable={selectable}
-                selected={item.id === selectedId}
-                noRadioButton={noRadioButton}
-                removable={removable}
-                onRowClick={onRowClick}
-                onRemoveClick={onRemoveClick}
-              />
-            );
-          })}
-        </RadioButtonGroup>
-      </TableBody>
-      {renderFooterChildren && (
-        <FooterContainer footerColor={footerColor}>{renderFooterChildren()}</FooterContainer>
-      )}
-    </TableSheet>
-  );
-};
+class Table<T extends BaseDataItem> extends React.Component<TableProps<T>> {
+  public render() {
+    const {
+      children,
+      data,
+      selectable,
+      selectedId,
+      noRadioButton,
+      removable,
+      sortable,
+      minWidth,
+      maxHeight,
+      headerBgColor = '#ffffff',
+      headerFontColor = '#000000',
+      headerFontSize = '12px',
+      headerHeight = '22px',
+      rowHeight,
+      renderFooterChildren,
+      footerColor,
+      onRowClick,
+      onRemoveClick,
+      currentSortKey,
+      currentSortOrder,
+      onHeaderClick
+    } = this.props;
+    const arrowIcon = currentSortOrder === 'desc' ? arrowDownIcon : arrowUpIcon;
+
+    return (
+      <TableSheet minWidth={minWidth}>
+        <TableHead
+          headerBgColor={headerBgColor}
+          headerFontColor={headerFontColor}
+          headerFontSize={headerFontSize}
+          headerHeight={headerHeight}
+          useScrollbar={Boolean(maxHeight)}
+          sortable={sortable}
+        >
+          {React.Children.map(
+            children,
+            (child: React.ReactElement<TableColumnProps<T, keyof T>>) => {
+              const { dataKey, label, width, align } = child.props;
+              return (
+                <TableCell key={dataKey} width={width} align={align}>
+                  <span onClick={() => sortable && onHeaderClick(dataKey)}>{label}</span>
+                  {/* TODO: activate below line after fixing css problem for tippy tooltip */}
+                  {/* {help && <QuestionMark help={help} />} */}
+                  <StyledSvg src={arrowIcon} visible={sortable && currentSortKey === dataKey} />
+                </TableCell>
+              );
+            }
+          )}
+        </TableHead>
+        <TableBody maxHeight={maxHeight}>
+          <RadioButtonGroup width="100%" value={selectedId}>
+            {_.map(data, (item) => {
+              return (
+                <TableRow
+                  key={item.id}
+                  children={children}
+                  item={item}
+                  rowHeight={rowHeight}
+                  selectable={selectable}
+                  selected={item.id === selectedId}
+                  noRadioButton={noRadioButton}
+                  removable={removable}
+                  onRowClick={onRowClick}
+                  onRemoveClick={onRemoveClick}
+                />
+              );
+            })}
+          </RadioButtonGroup>
+        </TableBody>
+        {renderFooterChildren && (
+          <FooterContainer footerColor={footerColor}>{renderFooterChildren()}</FooterContainer>
+        )}
+      </TableSheet>
+    );
+  }
+}
 
 export default Table;

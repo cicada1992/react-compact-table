@@ -1,12 +1,13 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { TableColumnProps } from './TableColumn';
+import { BaseDataItem } from './types';
 export declare const TableCell: import("styled-components").StyledComponent<"div", any, {
     width?: string;
     align?: string;
 }, never>;
-interface TableProps {
-    data: any[];
-    children: Array<React.ReactElement<TableColumnProps>>;
+interface TableProps<T> {
+    data: T[];
+    children: Array<React.ReactElement<TableColumnProps<T, keyof T>>>;
     minWidth?: string;
     maxHeight?: string;
     headerBgColor?: string;
@@ -23,9 +24,11 @@ interface TableProps {
     removable?: boolean;
     onRemoveClick?: (id: string) => void;
     sortable?: boolean;
-    currentSortKey?: string;
+    currentSortKey?: keyof T;
     currentSortOrder?: string;
-    onHeaderClick?: (sortKey: string) => void;
+    onHeaderClick?: (sortKey: keyof T) => void;
 }
-declare const Table: FunctionComponent<TableProps>;
+declare class Table<T extends BaseDataItem> extends React.Component<TableProps<T>> {
+    render(): JSX.Element;
+}
 export default Table;
