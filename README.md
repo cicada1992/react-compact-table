@@ -4,7 +4,7 @@
 
 ## Getting Started
 ```
-npm install react-compact-table styled-components lodash
+npm install react-compact-table --save
 ```
 
 
@@ -22,7 +22,7 @@ https://cicada1992.github.io/react-compact-table/
 ## TableProps
 | Property | Type | Required? | Description |
 |:---|:---|:---:|:---|
-| data | any[] | ✓ | inject your data (array) ✓ | TableColumn 
+| data | T[] | ✓ | inject your data (array) ✓ | TableColumn 
 | minWidth | string |  | If you want to set minWidth, apply this.
 | maxHeight | string |  | maxHeight means body's max height. If table body's height exceed this, will be scrollable. 
 | headerBgColor | string | | default: #ffffff
@@ -34,13 +34,14 @@ https://cicada1992.github.io/react-compact-table/
 | footerColor | string |  | default: none
 | selectable | boolean |  | activate to select (radio button in first column)
 | selectedId | string |  | inject selected id
+| noRadioButton | boolean |  | you can apply selectable row without radio button
 | onRowClick | (id: string) => void |  | inject callback function to change clicked id 
 | removable | boolean |  | activate to remove (be added *X* icon end of each row)
 | onRemoveClick | (id: string) => void |  | inject callback function to remove clicked id 
 | sortable | boolean |  | activate to sort (If you click header label, will be added sorting icon end of each header)
-| currentSortKey | SortKey |  | sort key (should be same as data key)
+| currentSortKey | keyof T |  | sort key (same as data key)
 | currentSortOrder | SortOrder |  | **desc** or **asc**
-| onHeaderClick | (sortKey: SortKey) => void |  | inject callback function to change sort key || sort order related to clicked specific header label
+| onHeaderClick | (sortKey: keyof T) => void |  | inject callback function to change sort key || sort order related to clicked specific header label
 
 
 ## TableColumnProps
@@ -54,9 +55,14 @@ https://cicada1992.github.io/react-compact-table/
 | cellAlign | string | | if you want to apply align separately between header and cell, use this
 
 
-## Example
+## Basic Usage
 ```
-const data = [
+interface DataItem {
+  id: string;
+  name: string;
+  conversions: number;
+}
+const data: DataItem[] = [
   { id: 'id-0', name: 'DongYoon',  conversions: 23242424 },
   { id: 'id-1', name: 'SangBoak', conversions: 1234 },
   { id: 'id-2', name: 'MoonSik', conversions: 3 },
@@ -66,7 +72,7 @@ const data = [
 ```
 ```
 <Table data={data}>
-  <TableColumn
+  <TableColumn<DataItem, 'name'>
     dataKey="name"
     label="Name"
     help="this is pure text"
@@ -74,13 +80,13 @@ const data = [
   >
      {({ value }) => <Text>{value}</Text>}
   </TableColumn>
-  <TableColumn
+  <TableColumn<DataItem, 'conversions'>
      dataKey="conversions"
      label="Conversions"
      help={<div>I'm react node</div>}
      align="right"
   >
-    {({ value })) => <Text>{formatNumber(args.value) || 0}</Text>}
+    {({ value }) => <Text>{formatNumber(value) || 0}</Text>}
   </TableColumn>
 </Table>
 ```
