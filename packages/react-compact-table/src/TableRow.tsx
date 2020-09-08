@@ -1,12 +1,14 @@
 import RadioButton from '@components/RadioButton';
 import Svg from '@components/Svg';
 import closeIcon from '@icons/close.svg';
+import { boundMethod } from 'autobind-decorator';
 import _ from 'lodash';
-import React, { FunctionComponent, MouseEvent, useCallback, useState } from 'react';
+import React, { MouseEvent } from 'react';
 import styled, { css } from 'styled-components';
 
 import { TableCell } from './Table';
 import { TableColumnProps } from './TableColumn';
+import { BaseDataItem } from './types';
 
 const TableRowContainer = styled.div<{ active: boolean; height: string }>`
   display: flex;
@@ -45,9 +47,9 @@ const StyledSvg = styled(Svg)`
   left: 5px;
 `;
 
-interface TableRowProps {
-  item: any;
-  children: Array<React.ReactElement<TableColumnProps>>;
+interface TableRowProps<T> {
+  item: T;
+  children: Array<React.ReactElement<TableColumnProps<T, keyof T>>>;
   rowHeight?: string;
 
   selectable?: boolean;
@@ -59,67 +61,96 @@ interface TableRowProps {
   onRemoveClick?: (id: string) => void;
 }
 
-export const TableRow: FunctionComponent<TableRowProps> = ({
-  item,
-  selectable,
-  selected,
-  noRadioButton,
-  removable,
-  rowHeight,
-  onRowClick,
-  onRemoveClick,
-  children
-}) => {
-  const [hover, setHover] = useState(false);
-  const handleRowHover = useCallback(() => setHover(true), [setHover]);
-  const handleRowUnhover = useCallback(() => setHover(false), [setHover]);
+interface TableRowState {
+  hover: boolean;
+}
 
-  const handleRowClick = (evt: MouseEvent<HTMLDivElement>) => {
+export class TableRow<T extends BaseDataItem> extends React.Component<
+  TableRowProps<T>,
+  TableRowState
+> {
+  constructor(props: TableRowProps<T>) {
+    super(props);
+
+    this.state = { hover: false };
+  }
+
+  public render() {
+    const {
+      item,
+      selectable,
+      selected,
+      noRadioButton,
+      removable,
+      rowHeight,
+      children
+    } = this.props;
+    const { hover } = this.state;
+
+    return (
+      <TableRowContainer
+        active={selectable && (selected || hover)}
+        height={rowHeight}
+        onClick={this.handleRowClick}
+        onMouseEnter={this.handleRowHover}
+        onMouseLeave={this.handleRowUnhover}
+      >
+        {React.Children.map(
+          children,
+          (child: React.ReactElement<TableColumnProps<T, keyof T>>, idx) => {
+            const isFirst = idx === 0;
+            const { dataKey, width, cellAlign, align, children: renderProps } = child.props;
+            const shouldShowRadioButton = !noRadioButton && selectable && isFirst;
+            const column = renderProps({
+              id: item.id,
+              value: item[dataKey],
+              values: item
+            });
+            return (
+              <TableCell key={dataKey} width={width} align={cellAlign || align}>
+                {shouldShowRadioButton ? (
+                  <RadioButton label={<Label>{column}</Label>} checked={selected} value={item.id} />
+                ) : (
+                  column
+                )}
+              </TableCell>
+            );
+          }
+        )}
+        {removable && (
+          <RemoveIcon show={hover} onClick={this.handleRemoveClick}>
+            <StyledSvg src={closeIcon} />
+          </RemoveIcon>
+        )}
+      </TableRowContainer>
+    );
+  }
+
+  @boundMethod
+  private handleRowClick(evt: MouseEvent<HTMLDivElement>) {
+    const { item, selectable, onRowClick } = this.props;
     if (selectable && onRowClick) {
       onRowClick(item.id);
     }
     evt.stopPropagation();
-  };
+  }
 
-  const handleRemoveClick = (evt: MouseEvent<HTMLDivElement>) => {
+  @boundMethod
+  private handleRemoveClick(evt: MouseEvent<HTMLDivElement>) {
+    const { item, removable, onRemoveClick } = this.props;
     if (removable && onRemoveClick) {
       onRemoveClick(item.id);
     }
     evt.stopPropagation();
-  };
+  }
 
-  return (
-    <TableRowContainer
-      active={selectable && (selected || hover)}
-      height={rowHeight}
-      onClick={handleRowClick}
-      onMouseEnter={handleRowHover}
-      onMouseLeave={handleRowUnhover}
-    >
-      {React.Children.map(children, (child: React.ReactElement, idx) => {
-        const isFirst = idx === 0;
-        const { dataKey, width, cellAlign, align, children: renderProps } = child.props;
-        const shouldShowRadioButton = !noRadioButton && selectable && isFirst;
-        const column = renderProps({
-          id: item.id,
-          value: item[dataKey],
-          values: item
-        });
-        return (
-          <TableCell key={dataKey} width={width} align={cellAlign || align}>
-            {shouldShowRadioButton ? (
-              <RadioButton label={<Label>{column}</Label>} checked={selected} value={item.id} />
-            ) : (
-              column
-            )}
-          </TableCell>
-        );
-      })}
-      {removable && (
-        <RemoveIcon show={hover} onClick={handleRemoveClick}>
-          <StyledSvg src={closeIcon} />
-        </RemoveIcon>
-      )}
-    </TableRowContainer>
-  );
-};
+  @boundMethod
+  private handleRowHover() {
+    this.setState({ hover: true });
+  }
+
+  @boundMethod
+  private handleRowUnhover() {
+    this.setState({ hover: false });
+  }
+}

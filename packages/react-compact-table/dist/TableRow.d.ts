@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from 'react';
+import React from 'react';
 import { TableColumnProps } from './TableColumn';
-interface TableRowProps {
-    item: any;
-    children: Array<React.ReactElement<TableColumnProps>>;
+import { BaseDataItem } from './types';
+interface TableRowProps<T> {
+    item: T;
+    children: Array<React.ReactElement<TableColumnProps<T, keyof T>>>;
     rowHeight?: string;
     selectable?: boolean;
     selected?: boolean;
@@ -11,5 +12,15 @@ interface TableRowProps {
     removable?: boolean;
     onRemoveClick?: (id: string) => void;
 }
-export declare const TableRow: FunctionComponent<TableRowProps>;
+interface TableRowState {
+    hover: boolean;
+}
+export declare class TableRow<T extends BaseDataItem> extends React.Component<TableRowProps<T>, TableRowState> {
+    constructor(props: TableRowProps<T>);
+    render(): JSX.Element;
+    private handleRowClick;
+    private handleRemoveClick;
+    private handleRowHover;
+    private handleRowUnhover;
+}
 export {};
